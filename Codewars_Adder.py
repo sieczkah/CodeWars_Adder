@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import tkinter as tk
 from tkinter import messagebox
+import re
 
 root = tk.Tk()
 root.title('CodeWars Adder')
@@ -44,12 +45,13 @@ class CodewarsAdder:
 
         self.link = None
         self.kata_name = None
-        self.kata_kyu = None
+        self.file_name = None
+        self.kata_rank = None
         self.contents = None
 
     # After Scrapping displays scrapped Kata Name and its Kyu to know with which kata we are creating
-    def kata_name_kyu(self):
-        self.name_label.configure(text=self.kata_name + ' ' + self.kata_kyu)
+    def show_name_rank(self):
+        self.name_label.configure(text=self.kata_name + ' ' + self.kata_rank)
 
     # With BeautifulSoup from the passed link scrapps the Kata Name and Kyu,
     # later is used to create file in corresponding kyu folder
@@ -57,11 +59,17 @@ class CodewarsAdder:
         self.link = self.e1.get()
         source = requests.get(self.link).text
         soup = BeautifulSoup(source, 'lxml')
-        self.kata_name = soup.find('div', class_='flex items-center').h4.text
-        if 'Loading Kata:' in self.kata_name:
-            self.kata_name = self.kata_name[14:]
-        self.kata_kyu = soup.find('div', class_='flex items-center').span.text
-        self.kata_name_kyu()
+        scrapped_name = soup.find('div', class_='flex items-center').h4.text
+
+        self.kata_name = re.sub(r'Loading kata: ', '', scrapped_name, count=1,
+                                flags=re.I)  # handles Loading Kata: that sometimes appears
+        self.kata_rank = soup.find('div', class_='flex items-center').span.text
+        self.show_name_rank()
+
+    # creates filename from kata_name handles restricted symbols
+    # and Loading Kata: prefix (that sometimes apperas when scrapping name)
+    def create_file_name(self):
+        self.file_name = re.sub(r'(?!-|\s|\(|\))\W+', '', self.kata_name)
 
     # From the text box(where whe put the code) creates contents variable
     # Which stores the inputted code
@@ -72,7 +80,9 @@ class CodewarsAdder:
     # In the File writes the link to Kata and code we passed
     def create_file(self):
         self.enter_content()
-        with open(f'D:/CodeWars/{self.kata_kyu}/{self.kata_name}.py', 'w') as file:
+        self.create_file_name()
+
+        with open(f"D:/CodeWars/{self.kata_rank}/{self.file_name}.py", 'w') as file:
             if self.contents:
                 file.write(f'"""{self.link}"""' + '\n\n' + self.contents)
             pass

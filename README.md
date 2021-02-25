@@ -6,7 +6,7 @@ So as a little project I created this simple KataAdder/CodewarsAdder with GUI to
 Firstly it was only adding the Kata (no errors handling, nothing). Then I created messageboxes for info and errors.
 Program does:
     <p>
-        <img height='450' src="KataAdder.gif" style="; margin-left: 60px;">
+        <img height='450' src="KataAdder.gif" style="padding: 0 100px 0 100px;">
         <li>take link from user input</li>
         <li>Scrapp the page for Kata name and Rank</li>
         <li>Creates and check filename of Kata</li>

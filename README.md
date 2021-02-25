@@ -9,9 +9,9 @@ Program does:
 * Scrapp the page for Kata name and Rank
 * Creates and check filename of Kata
 * In dir of Kata KYU creates the file - if file exists asking if to overwrite
-
-<img src="KataAdder.gif" alt="GIF" height="400" style="margin-left: 150px"/>
-
+<p align="center">
+<img src="KataAdder.gif" alt="GIF" height="400"/>
+</p>
 Right now it is super basic, I want to handle more errors, let the user choose the root dir where to create kata directories.
 In the future I want it to track the challenge ( done kata, completed days, how much I need to do to keep on track)
 

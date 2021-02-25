@@ -10,7 +10,7 @@ Program does:
 * Creates and check filename of Kata
 * In dir of Kata KYU creates the file - if file exists asking if to overwrite
 
-![](KataAdder.gif =300x400)
+![](KataAdder.gif=300x400)
 
 Right now it is super basic, I want to handle more errors, let the user choose the root dir where to create kata directories.
 In the future I want it to track the challenge ( done kata, completed days, how much I need to do to keep on track)

@@ -5,8 +5,8 @@ I am doing [5 kata everyday challenge](https://github.com/sieczkah/Codewars_KATA
 So as a little project I created this simple KataAdder/CodewarsAdder with GUI to help me with my challenge. It was a lot of fun.
 Firstly it was only adding the Kata (no errors handling, nothing). Then I created messageboxes for info and errors.
 Program does:
-    <p style="margin-left: 50px;">
-        <img height='450' src="KataAdder.gif" >
+    <p align= "center">
+        <img width='550' src="KataAdder.gif" >
     </p>
     <p>
         <li>take link from user input</li>

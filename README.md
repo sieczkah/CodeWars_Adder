@@ -5,13 +5,15 @@ I am doing [5 kata everyday challenge](https://github.com/sieczkah/Codewars_KATA
 So as a little project I created this simple KataAdder/CodewarsAdder with GUI to help me with my challenge. It was a lot of fun.
 Firstly it was only adding the Kata (no errors handling, nothing). Then I created messageboxes for info and errors.
 Program does:
-* take link from user input
-* Scrapp the page for Kata name and Rank
-* Creates and check filename of Kata
-* In dir of Kata KYU creates the file - if file exists asking if to overwrite
-
-<img src="KataAdder.gif" alt="GIF" height="400"/ style="margin">
-
+    <p align= "center">
+        <img width='550' src="KataAdder.gif" >
+    </p>
+    <p>
+        <li>take link from user input</li>
+        <li>Scrapp the page for Kata name and Rank</li>
+        <li>Creates and check filename of Kata</li>
+        <li>In dir of Kata KYU creates the file - if file exists asking if to overwrite</li>
+    </p>
 Right now it is super basic, I want to handle more errors, let the user choose the root dir where to create kata directories.
 In the future I want it to track the challenge ( done kata, completed days, how much I need to do to keep on track)
 

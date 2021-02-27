@@ -21,7 +21,6 @@ class KataFile:
     # With BeautifulSoup from the passed link scrapps the Kata Name and Kyu,
     # later is used to create file in corresponding kyu folder
     def scrapping(self):
-        self.link = self.e1.get()
         source = requests.get(self.link).text
         soup = BeautifulSoup(source, 'lxml')
         scrapped_name = soup.find('div', class_='flex items-center').h4.text
@@ -29,7 +28,6 @@ class KataFile:
         self.kata_name = re.sub(r'Loading kata: ', '', scrapped_name, count=1,
                                 flags=re.I)  # handles Loading Kata: that sometimes appears
         self.kata_rank = soup.find('div', class_='flex items-center').span.text
-        self.show_name_rank()
 
     # checks if file exists If not calling func create if it exists
     # asking the user if to overwrite the File and takes action according to Yes/No answer
@@ -49,8 +47,6 @@ class KataFile:
     # and Loading Kata: prefix (that sometimes apperas when scrapping name)
     def add_file_name(self):
         self.file_name = re.sub(r'(?!-|\s|\(|\))\W+', ' ', self.kata_name)
-    # In the Directory D:/Codewars/... creates file kata_name.py in the folder
-    # In the File writes the link to Kata and code we passed
 
 
 class KataAdder(KataFile):
@@ -92,14 +88,15 @@ class KataAdder(KataFile):
         # Frame 4 hold two buttons Create and Clear
         frame4 = tk.Frame(master, bg='#202020', bd=1)
         frame4.place(width=300, height=35, relx=0.5, rely=0.9, anchor='s')
-        self.contentButton = tk.Button(frame4, text=u'\u2713' + 'Create File', padx=20, pady=5,
-                                       command=lambda: self.button_create_file(),
-                                       fg='#26de58', bg='#3F3F3F', activebackground='#202020',
-                                       activeforeground='#f1ff33', bd=1)
-        self.contentButton.place(rely=1, relx=0.3, anchor='s')
+        # Button to create file with given content(code)
+        self.createButton = tk.Button(frame4, text=u'\u2713' + 'Create File', padx=20, pady=5,
+                                      command=lambda: self.button_create_file(),
+                                      fg='#26de58', bg='#3F3F3F', activebackground='#202020',
+                                      activeforeground='#f1ff33', bd=1)
+        self.createButton.place(rely=1, relx=0.3, anchor='s')
 
         self.clearButton = tk.Button(frame4, text='X  Clear', padx=20, pady=5,
-                                     command=lambda: self.button_create_file(),
+                                     command=lambda: self.clear(),
                                      fg='red', bg='#3F3F3F', activebackground='#202020',
                                      activeforeground='#f1ff33', bd=1)
         self.clearButton.place(rely=1, relx=0.75, anchor='s')
@@ -110,20 +107,34 @@ class KataAdder(KataFile):
 
     def button_scrap(self):
         try:
+            self.link = self.e1.get()
             self.scrapping()
+            self.show_name_rank()
         except:
             messagebox.showerror('Wrong link', 'Wrong link provided')
 
     # Methods for Create File BUTTON
     def button_create_file(self):
-        self.enter_content()
-        self.create_file()
+        try:
+            self.enter_content()
+            self.create_file()
+        except TypeError:
+            messagebox.showerror('Error', 'No info provided')
 
     # From the text box(where whe put the code) creates contents variable
     # Which stores the inputted code
     def enter_content(self):
         self.contents = self.e2.get('1.0', tk.END)
 
+    # Clear all data(variables, textbox, labels)
+    def clear(self):
+        self.e1.delete(0, tk.END)
+        self.e2.delete('1.0', tk.END)
+        self.name_label.configure(text='Kata name and Kyu')
+        super(KataAdder, self).__init__()
+
+    # In the Directory D:/Codewars/... creates file kata_name.py in the folder
+    # In the File writes the link to Kata and code we passed
     def create_file(self):
         path = self.path_check()
         if path:

@@ -16,7 +16,7 @@ class KataFile:
         self.kata_name = None
         self.file_name = None
         self.kata_rank = None
-        self.contents = None
+        self.content = None
 
     # With BeautifulSoup from the passed link scrapps the Kata Name and Kyu,
     # later is used to create file in corresponding kyu folder
@@ -116,15 +116,23 @@ class KataAdder(KataFile):
     # Methods for Create File BUTTON
     def button_create_file(self):
         try:
-            self.enter_content()
-            self.create_file()
+            if not self.get_content():
+                msg_blank_file = messagebox.askyesno("Warning", "No code entered. Do you want to create blank file ?")
+                if msg_blank_file:
+                    self.create_file()
+                else:
+                    pass
+            else:
+                self.create_file()
         except TypeError:
             messagebox.showerror('Error', 'No info provided')
 
-    # From the text box(where whe put the code) creates contents variable
-    # Which stores the inputted code
-    def enter_content(self):
-        self.contents = self.e2.get('1.0', tk.END)
+    # Creates content variable that stores textBox content
+    # lstrip('\n') is used to strip the newlinechar that comes with get.entry
+    # in order to be able to check if the content variable is empty in buttonCreateFile method
+    def get_content(self):
+        self.content = self.e2.get('1.0', tk.END).lstrip('\n')
+        return self.content
 
     # Clear all data(variables, textbox, labels)
     def clear(self):
@@ -139,9 +147,7 @@ class KataAdder(KataFile):
         path = self.path_check()
         if path:
             with open(path, 'w') as file:
-                if self.contents:
-                    file.write(f'"""{self.link}"""' + '\n\n' + self.contents)
-                pass
+                file.write(f'"""{self.link}"""' + '\r\n\n' + self.content)
             messagebox.showinfo('CodeWars Adder', f'Kata Created! saved as: {self.file_name}')
         else:
             messagebox.showerror('File exists', 'File exists')

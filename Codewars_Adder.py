@@ -66,11 +66,11 @@ class KataAdder(KataFile):
         frame1.place(relwidth=0.9, relheight=0.1, relx=0.05, rely=0.1)
         self.e1 = tk.Entry(frame1, bg='#707070')
         self.e1.place(relwidth=1, relheight=0.5)
-        self.scrappButton = tk.Button(frame1, text='Scrap from source', padx=10, pady=5,
-                                      command=lambda: self.button_scrap(),
-                                      fg='#f1ff33', bg='#3F3F3F', activebackground='#202020',
-                                      activeforeground='#f1ff33')
-        self.scrappButton.place(rely=0.55, relx=0.5, anchor='n')
+        scrap_button = tk.Button(frame1, text='Scrap from source', padx=10, pady=5,
+                                 command=lambda: self.button_scrap(),
+                                 fg='#f1ff33', bg='#3F3F3F', activebackground='#202020',
+                                 activeforeground='#f1ff33')
+        scrap_button.place(rely=0.55, relx=0.5, anchor='n')
 
         # Frame2 holds the label for Kata name and Kyu rank
         frame2 = tk.Frame(master, bg='#202020', bd=5)
@@ -80,26 +80,31 @@ class KataAdder(KataFile):
         self.name_label.place(rely=0.3, relx=0, relwidth=1)
 
         # Frame3 hold TextBox for code
-        frame3 = tk.Frame(master, bg='#202020', bd=1)
-        frame3.place(relwidth=0.7, relheight=0.55, relx=0.15, rely=0.35)
+        frame3 = tk.Frame(master, bg='red', bd=1)
+        frame3.place(relwidth=0.85, relheight=0.5, relx=0.05, rely=0.35)
         self.e2 = tk.Text(frame3, bg='#707070')
-        self.e2.place(relwidth=1, relheight=0.9)
+        self.e2.place(relwidth=0.82, relheight=1,)
+        stat_button = tk.Button(frame3, text='Stats', padx=1, pady=1,
+                                command=StatsWindow, width=8,
+                                fg='#2d69e0', bg='#3F3F3F', activebackground='#202020',
+                                activeforeground='#f1ff33', bd=1, font=16)
+        stat_button.place(relx=0, rely=0)
 
         # Frame 4 hold two buttons Create and Clear
         frame4 = tk.Frame(master, bg='#202020', bd=1)
         frame4.place(width=300, height=35, relx=0.5, rely=0.9, anchor='s')
         # Button to create file with given content(code)
-        self.createButton = tk.Button(frame4, text=u'\u2713' + 'Create File', padx=20, pady=5,
-                                      command=lambda: self.button_create_file(),
-                                      fg='#26de58', bg='#3F3F3F', activebackground='#202020',
-                                      activeforeground='#f1ff33', bd=1)
-        self.createButton.place(rely=1, relx=0.3, anchor='s')
+        create_button = tk.Button(frame4, text=u'\u2713' + 'Create File', padx=20, pady=5,
+                                  command=lambda: self.button_create_file(),
+                                  fg='#26de58', bg='#3F3F3F', activebackground='#202020',
+                                  activeforeground='#f1ff33', bd=1)
+        create_button.place(rely=1, relx=0.3, anchor='s')
 
-        self.clearButton = tk.Button(frame4, text='X  Clear', padx=20, pady=5,
-                                     command=lambda: self.clear(),
-                                     fg='red', bg='#3F3F3F', activebackground='#202020',
-                                     activeforeground='#f1ff33', bd=1)
-        self.clearButton.place(rely=1, relx=0.75, anchor='s')
+        clear_button = tk.Button(frame4, text='X  Clear', padx=20, pady=5,
+                                 command=lambda: self.clear(),
+                                 fg='red', bg='#3F3F3F', activebackground='#202020',
+                                 activeforeground='#f1ff33', bd=1)
+        clear_button.place(rely=1, relx=0.75, anchor='s')
 
     # After Scrapping displays scrapped Kata Name and its Kyu to know with which kata we are creating
     def show_name_rank(self):
@@ -151,6 +156,28 @@ class KataAdder(KataFile):
             messagebox.showinfo('CodeWars Adder', f'Kata Created! saved as: {self.file_name}')
         else:
             messagebox.showerror('File exists', 'File exists')
+
+
+class StatsWindow:
+
+    def __init__(self):
+        self.kata_qty = None
+        self.create_stat()
+        window = tk.Toplevel(root, height=300, width=400, bg='#202020')
+        label = tk.Label(window, text=f'Kata done:\n{self.kata_qty}', font=('ComicSans', 14), fg='#f1ff33', bg='#202020')
+        label.place(relx=0.5, rely=0.1, anchor='nw')
+
+    @staticmethod
+    def is_py(directory):
+        return [file for file in directory if file.endswith('.py')]
+
+    def create_stat(self):
+        directories = [f for f in os.listdir('D:/Codewars/') if f.endswith('kyu')]
+        dir_files = {directory: len(self.is_py(os.listdir('D:/Codewars/' + directory)))
+                     for directory in directories}
+        self.kata_qty = sum(dir_files.values())
+
+
 
 
 KataAdder(root)

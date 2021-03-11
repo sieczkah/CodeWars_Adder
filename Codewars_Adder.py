@@ -1,4 +1,3 @@
-from bs4 import BeautifulSoup
 import requests
 import tkinter as tk
 from tkinter import messagebox
@@ -18,16 +17,14 @@ class KataFile:
         self.kata_rank = None
         self.content = None
 
-    # With BeautifulSoup from the passed link scrapps the Kata Name and Kyu,
+    # Getting kata info wit codewars api,
     # later is used to create file in corresponding kyu folder
-    def scrapping(self):
-        source = requests.get(self.link).text
-        soup = BeautifulSoup(source, 'lxml')
-        scrapped_name = soup.find('div', class_='flex items-center').h4.text
-
-        self.kata_name = re.sub(r'Loading kata: ', '', scrapped_name, count=1,
-                                flags=re.I)  # handles Loading Kata: that sometimes appears
-        self.kata_rank = soup.find('div', class_='flex items-center').span.text
+    def get_kata_info(self):
+        pattern = re.compile(r'(https?://)?(www\.codewars\.com/kata/\w+)')
+        self.link = re.match(pattern, self.link).group()
+        kata_json = requests.get(self.link + '.json').json()
+        self.kata_name = kata_json['name']
+        self.kata_rank = kata_json['rank']['name']
 
     # checks if file exists If not calling func create if it exists
     # asking the user if to overwrite the File and takes action according to Yes/No answer
@@ -66,11 +63,11 @@ class KataAdder(KataFile):
         frame1.place(relwidth=0.9, relheight=0.1, relx=0.05, rely=0.1)
         self.e1 = tk.Entry(frame1, bg='#707070')
         self.e1.place(relwidth=1, relheight=0.5)
-        scrap_button = tk.Button(frame1, text='Scrap from source', padx=10, pady=5,
-                                 command=lambda: self.button_scrap(),
-                                 fg='#f1ff33', bg='#3F3F3F', activebackground='#202020',
-                                 activeforeground='#f1ff33')
-        scrap_button.place(rely=0.55, relx=0.5, anchor='n')
+        get_info_button = tk.Button(frame1, text='Get Kata Info', padx=10, pady=5,
+                                    command=lambda: self.button_scrap(),
+                                    fg='#f1ff33', bg='#3F3F3F', activebackground='#202020',
+                                    activeforeground='#f1ff33')
+        get_info_button.place(rely=0.55, relx=0.5, anchor='n')
 
         # Frame2 holds the label for Kata name and Kyu rank
         frame2 = tk.Frame(master, bg='#202020', bd=5)
@@ -83,7 +80,7 @@ class KataAdder(KataFile):
         frame3 = tk.Frame(master, bg='red', bd=1)
         frame3.place(relwidth=0.85, relheight=0.5, relx=0.05, rely=0.35)
         self.e2 = tk.Text(frame3, bg='#707070')
-        self.e2.place(relwidth=0.82, relheight=1,)
+        self.e2.place(relwidth=0.82, relheight=1, )
         stat_button = tk.Button(frame3, text='Stats', padx=1, pady=1,
                                 command=StatsWindow, width=8,
                                 fg='#2d69e0', bg='#3F3F3F', activebackground='#202020',
@@ -113,7 +110,7 @@ class KataAdder(KataFile):
     def button_scrap(self):
         try:
             self.link = self.e1.get()
-            self.scrapping()
+            self.get_kata_info()
             self.show_name_rank()
         except:
             messagebox.showerror('Wrong link', 'Wrong link provided')
@@ -164,7 +161,8 @@ class StatsWindow:
         self.kata_qty = None
         self.create_stat()
         window = tk.Toplevel(root, height=300, width=400, bg='#202020')
-        label = tk.Label(window, text=f'Kata done:\n{self.kata_qty}', font=('ComicSans', 14), fg='#f1ff33', bg='#202020')
+        label = tk.Label(window, text=f'Kata done:\n{self.kata_qty}', font=('ComicSans', 14), fg='#f1ff33',
+                         bg='#202020')
         label.place(relx=0.5, rely=0.1, anchor='nw')
 
     @staticmethod
@@ -176,8 +174,6 @@ class StatsWindow:
         dir_files = {directory: len(self.is_py(os.listdir('D:/Codewars/' + directory)))
                      for directory in directories}
         self.kata_qty = sum(dir_files.values())
-
-
 
 
 KataAdder(root)

@@ -19,7 +19,7 @@ In the future I want it to track the challenge ( done kata, completed days, how 
 
 
 Edit: I reorganized the code, and GUI itself, added msgboxes.
-<p style="color:red"><b>Edit2:</b> 11.03. Realized Codewars provides info with json files, rewirted the code to use JSON instead of BeautifulSoup scrapping
-Added Simple statistic (need to restyle interface and add more options to stats). Right now it only counts total Kata according to .py files in directories, need also to let main directory choice</p>
+Edit2: 11.03. Realized Codewars provides info with json files, rewirted the code to use JSON instead of BeautifulSoup scrapping
+Added Simple statistic (need to restyle interface and add more options to stats). Right now it only counts total Kata according to .py files in directories, need also to let main directory choice
 
-- ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=Edit: I reorganized the code, and GUI itself, added msgboxes.) `#f03c15`
+

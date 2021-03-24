@@ -1,0 +1,6 @@
+*Label*font: ComicSans 14
+*Label*foreground: #f1ff33
+*background: #202020
+
+*Entry*background: #707070
+*Button*background: #3F3F3F

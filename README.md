@@ -10,7 +10,7 @@ Program does:
     </p>
     <p>
         <li>take link from user input</li>
-        <li>Scrapp the page for Kata name and Rank</li>
+        <li>Using provided JSON getting Kata name and Rank</li>
         <li>Creates and check filename of Kata</li>
         <li>In dir of Kata KYU creates the file - if file exists asking if to overwrite</li>
     </p>
@@ -19,5 +19,7 @@ In the future I want it to track the challenge ( done kata, completed days, how 
 
 
 Edit: I reorganized the code, and GUI itself, added msgboxes.
+Edit2: 11.03. Realized Codewars provides info with json files, rewirted the code to use JSON instead of BeautifulSoup scrapping
+Added Simple statistic (need to restyle interface and add more options to stats). Right now it only counts total Kata according to .py files in directories, need also to let main directory choice
 
 

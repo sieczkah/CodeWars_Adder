@@ -126,7 +126,7 @@ class KataAdder(KataFile):
         frame_textbox = tk.Frame(frame_4_code_entry)
         frame_textbox.pack(side='left', expand=1, fill='both')
         self.e2 = tk.Text(frame_textbox, bg='#707070')
-        self.e2.place(relwidth=0.99, relheight=0.99)
+        self.e2.place(relwidth=0.99, relheight=0.98)
 
         frame_buttons = tk.Frame(frame_4_code_entry)
         frame_buttons.pack()
@@ -137,7 +137,7 @@ class KataAdder(KataFile):
         stat_button.grid()
 
         chose_button = tk.Button(frame_buttons, text='Chose Directory', padx=1, pady=3,
-                                 command=lambda: self.change_path(), width=8,
+                                 command=lambda: self.button_chosedir(), width=8,
                                  fg='#2d69e0', font=16, wraplength=100)
         chose_button.grid()
 
@@ -158,6 +158,10 @@ class KataAdder(KataFile):
     # After Scrapping displays scrapped Kata Name and its Kyu to know with which kata we are creating
     def show_name_rank(self):
         self.name_label.configure(text=self.kata_name + '  |  ' + self.kata_rank)
+
+    def button_chosedir(self):
+        self.change_path()
+        self.stats = Stats(self.path.get_path())
 
     def button_scrap(self):
         try:

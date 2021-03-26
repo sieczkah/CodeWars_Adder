@@ -6,7 +6,7 @@ So as a little project I created this simple KataAdder/CodewarsAdder with GUI to
 Firstly it was only adding the Kata (no errors handling, nothing). Then I created messageboxes for info and errors.
 Program does:
     <p align= "center">
-        <img width='550' src="KataAdder.gif" >
+        <img width='700' src="KataAdder.gif" >
     </p>
     <p>
         <li>take link from user input</li>
